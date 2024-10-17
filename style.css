@@ -78,3 +78,28 @@ button:hover {
   text-decoration: line-through;
   opacity: 0.6;
 }
+
+.button-section {
+  display: flex;
+  gap: 5px;
+}
+
+.button-section button {
+  border-radius: 4px;
+}
+
+.button-section .button-complete {
+  background-color: #312edf;
+}
+
+.button-section .button-complete:hover {
+  background-color: #110de5;
+}
+
+.button-section .button-uncomplete {
+  background-color: #daa73a;
+}
+
+.button-section .button-uncomplete:hover {
+  background-color: #e59b06;
+}

@@ -10,6 +10,7 @@ export function renderTodos(todos) {
     const todo = todoItems[index];
     const listItemElement = document.createElement('li');
     const listItemTextElement = document.createElement('p');
+    const buttonSectionElement = document.createElement('div');
     const buttonCompleteTodoElement = document.createElement('button');
     const buttonDeleteTodoElement = document.createElement('button');
 
@@ -20,21 +21,31 @@ export function renderTodos(todos) {
       listItemTextElement.setAttribute('class', 'completed');
     }
 
-    buttonCompleteTodoElement.innerText = 'complete';
     buttonCompleteTodoElement.addEventListener('click', () => {
       todo.toggleCompleted();
       
       document.dispatchEvent(new Event(COMPLETE_ITEM));
     });
+    if (todo.completed) {
+      buttonCompleteTodoElement.innerText = 'uncomplete';
+      buttonCompleteTodoElement.setAttribute('class', 'button-uncomplete');
+    } else {
+      buttonCompleteTodoElement.innerText = 'complete';
+      buttonCompleteTodoElement.setAttribute('class', 'button-complete');
+    }
 
     buttonDeleteTodoElement.innerText = 'delete';
     buttonDeleteTodoElement.addEventListener('click', () => {
       todos.removeTodo(todo.id);
     });
 
+    buttonSectionElement.setAttribute('class', 'button-section');
+    buttonSectionElement.appendChild(buttonCompleteTodoElement);
+    buttonSectionElement.appendChild(buttonDeleteTodoElement);
+
     listItemElement.appendChild(listItemTextElement);
-    listItemElement.appendChild(buttonCompleteTodoElement);
-    listItemElement.appendChild(buttonDeleteTodoElement);
+    listItemElement.appendChild(buttonSectionElement);
+
     todoListElement.appendChild(listItemElement);
   }
 };
