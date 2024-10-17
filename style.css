@@ -96,10 +96,10 @@ button:hover {
   background-color: #110de5;
 }
 
-.button-section .button-uncomplete {
+.button-section .button-revert {
   background-color: #daa73a;
 }
 
-.button-section .button-uncomplete:hover {
+.button-section .button-revert:hover {
   background-color: #e59b06;
 }
