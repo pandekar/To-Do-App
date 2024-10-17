@@ -9,14 +9,15 @@ export function renderTodos(todos) {
   for (const index in todoItems) {
     const todo = todoItems[index];
     const listItemElement = document.createElement('li');
+    const listItemTextElement = document.createElement('p');
     const buttonCompleteTodoElement = document.createElement('button');
     const buttonDeleteTodoElement = document.createElement('button');
 
     listItemElement.setAttribute('id', todo.id);
     listItemElement.setAttribute('class', 'todo-item');
-    listItemElement.innerText = todo.text;
+    listItemTextElement.innerText = todo.text;
     if (todo.completed) {
-      listItemElement.setAttribute('class', 'completed');
+      listItemTextElement.setAttribute('class', 'completed');
     }
 
     buttonCompleteTodoElement.innerText = 'complete';
@@ -27,11 +28,11 @@ export function renderTodos(todos) {
     });
 
     buttonDeleteTodoElement.innerText = 'delete';
-    // buttonDeleteTodoElement.setAttribute('class', 'todo-item');
     buttonDeleteTodoElement.addEventListener('click', () => {
       todos.removeTodo(todo.id);
     });
 
+    listItemElement.appendChild(listItemTextElement);
     listItemElement.appendChild(buttonCompleteTodoElement);
     listItemElement.appendChild(buttonDeleteTodoElement);
     todoListElement.appendChild(listItemElement);
