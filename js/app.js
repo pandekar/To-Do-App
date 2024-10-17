@@ -1,6 +1,6 @@
-import TodoList from './TodoList.js';
+import TodoList, { REMOVE_TODO } from './TodoList.js';
 import TodoItem from './TodoItem.js';
-import { renderTodos } from './ui.js';
+import { renderTodos, COMPLETE_ITEM } from './ui.js';
 
 const SUBMIT_WITH_VALUE = 'SUBMIT_WITH_VALUE'
 const emptyString = '';
@@ -22,8 +22,17 @@ form.addEventListener('submit', (e) => {
 
 // TODO: Implement addTodo function
 document.addEventListener(SUBMIT_WITH_VALUE, ({ detail }) => {
-  todoList.addTodo(new TodoItem(detail.textValue));
+  const todoItem = new TodoItem(detail.textValue);
+  todoList.addTodo(todoItem);
   todoInputElement.value = emptyString;
 
-  renderTodos(todoList.getTodos());
+  renderTodos(todoList);
+});
+
+document.addEventListener(COMPLETE_ITEM, () => {
+  renderTodos(todoList);
+});
+
+document.addEventListener(REMOVE_TODO, () => {
+  renderTodos(todoList);
 });

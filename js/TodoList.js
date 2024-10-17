@@ -1,3 +1,5 @@
+export const REMOVE_TODO = 'REMOVE_TODO';
+
 export default class TodoList {
   constructor() {
     this.todos = [];
@@ -9,8 +11,11 @@ export default class TodoList {
   };
 
   // TODO: Implement removeTodo method
-  removeTodo = () => {
+  removeTodo = (id) => {
+    const newTodos = this.todos.filter((todo) => todo.id !== id);
 
+    this.todos = newTodos;
+    document.dispatchEvent(new Event(REMOVE_TODO));
   };
 
   // TODO: Implement toggleTodo method

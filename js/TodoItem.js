@@ -7,6 +7,6 @@ export default class TodoItem {
 
   // TODO: Implement toggleCompleted method
   toggleCompleted = () => {
-
+    this.completed = !this.completed;
   };
 };
