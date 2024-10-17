@@ -1,4 +1,4 @@
-import TodoList, { REMOVE_TODO } from './TodoList.js';
+import TodoList, { REMOVE_TODO, STORAGE_KEY, isStorageExist } from './TodoList.js';
 import TodoItem from './TodoItem.js';
 import { renderTodos, COMPLETE_ITEM } from './ui.js';
 
@@ -26,13 +26,39 @@ document.addEventListener(SUBMIT_WITH_VALUE, ({ detail }) => {
   todoList.addTodo(todoItem);
   todoInputElement.value = emptyString;
 
+  // LOCAL STORAGE ACTION
+  if (isStorageExist()) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ todos: todoList.getTodos() }));
+  }
+
   renderTodos(todoList);
 });
 
 document.addEventListener(COMPLETE_ITEM, () => {
   renderTodos(todoList);
+
+  // LOCAL STORAGE ACTION
+  if (isStorageExist()) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ todos: todoList.getTodos() }));
+  }
 });
 
 document.addEventListener(REMOVE_TODO, () => {
   renderTodos(todoList);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (isStorageExist()) {
+    const { todos } = JSON.parse(localStorage.getItem(STORAGE_KEY))
+
+    for (const i in todos) {
+      const todo = todos[i];
+      const todoItem = new TodoItem(todo.text, todo.completed);
+      todoList.addTodo(todoItem)
+    }
+
+    renderTodos(todoList);
+  } else {
+    alert('Your browser does not have local storage');
+  }
 });

@@ -1,8 +1,8 @@
 export default class TodoItem {
-  constructor(text) {
+  constructor(text, completed=false) {
     this.id = Date.now().toString() + Math.random().toString(16);
     this.text = text;
-    this.completed = false;
+    this.completed = completed;
   }
 
   // TODO: Implement toggleCompleted method
