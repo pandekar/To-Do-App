@@ -63,7 +63,25 @@ button:hover {
   background-color: #4cae4c;
 }
 
+#list-section {
+  display: flex;
+}
+
+#todo-list-section {
+  width: 50%;
+  float: left;
+}
+
+#complete-list-section {
+  width: 50%;
+}
+
 #todo-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#complete-list {
   list-style-type: none;
   padding: 0;
 }

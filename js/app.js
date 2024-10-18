@@ -5,12 +5,18 @@ import TodoList, {
   saveTodoListToLocalStorage
 } from './TodoList.js';
 import TodoItem from './TodoItem.js';
-import { renderTodos, COMPLETE_ITEM } from './ui.js';
+import {
+  renderTodos,
+  draggedObject,
+  COMPLETE_ITEM
+} from './ui.js';
 
 const SUBMIT_WITH_VALUE = 'SUBMIT_WITH_VALUE'
 const emptyString = '';
 
 const todoList = new TodoList();
+
+let dragged = '';
 
 // TODO: Select DOM elements
 const todoInputElement = document.getElementById('todo-input');
@@ -75,4 +81,41 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     alert('Your browser does not have local storage');
   }
+});
+
+const completeListSectionElement = document.getElementById('complete-list-section');
+completeListSectionElement.addEventListener('dragover', (e) => {
+  e.preventDefault();
+});
+
+completeListSectionElement.addEventListener('drop', (e) => {
+  e.preventDefault();
+
+  const dragged = draggedObject;
+  dragged.toggleCompleted();
+
+  todoList.removeTodo(dragged.id);
+  todoList.addTodo(new TodoItem(dragged.text, dragged.deadline, dragged.completed))
+
+  renderTodos(todoList);
+  saveTodoListToLocalStorage(STORAGE_KEY, todoList.getTodos());
+});
+
+// test
+const todoListSection = document.getElementById('todo-list-section');
+todoListSection.addEventListener('dragover', (e) => {
+  e.preventDefault();
+});
+
+todoListSection.addEventListener('drop', (e) => {
+  e.preventDefault();
+
+  const dragged = draggedObject;
+  dragged.toggleCompleted();
+
+  todoList.removeTodo(dragged.id);
+  todoList.addTodo(new TodoItem(dragged.text, dragged.deadline, dragged.completed))
+
+  renderTodos(todoList);
+  saveTodoListToLocalStorage(STORAGE_KEY, todoList.getTodos());
 });

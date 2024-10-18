@@ -1,4 +1,6 @@
 export const COMPLETE_ITEM = 'COMPLETE_ITEM';
+export let draggedElement = null;
+export let draggedObject = null;
 
 const _createListItemTextElement = (todo) => {
   const listItemTextElement = document.createElement('p');
@@ -80,29 +82,55 @@ const _createHeader = () => {
   return firstRow;
 };
 
+const onDrag = (todo) => (e) => {
+  draggedElement = e.target;
+  draggedObject = todo;
+};
+
+const _createTodoElement = (todos, todo) => {
+  const listItemElement = document.createElement('li');
+  const listItemTextElement = _createListItemTextElement(todo);
+  const deadlineSectionElement = _createDeadlineSectionElement(todo);
+  const buttonSectionElement = _createButtonSectionElement(todos, todo);
+
+  listItemElement.setAttribute('id', todo.id);
+  listItemElement.setAttribute('class', 'todo-item');
+  listItemElement.appendChild(listItemTextElement);
+  listItemElement.appendChild(deadlineSectionElement);
+  listItemElement.appendChild(buttonSectionElement);
+  listItemElement.addEventListener('dragstart', onDrag(todo));
+
+  return listItemElement;
+}
+
 export function renderTodos(todos) {
   // TODO: Implement renderTodos function
   const todoItems = todos.getTodos();
+
   const todoListElement = document.getElementById('todo-list');
   todoListElement.innerHTML = '';
 
-  const firstRowHeader = _createHeader();
-  todoListElement.appendChild(firstRowHeader);
+  const completeListElement = document.getElementById('complete-list');
+  completeListElement.innerHTML = '';
+
+  const todoListHeader = _createHeader();
+  const completeListHeader = _createHeader();
+  todoListElement.appendChild(todoListHeader);
+  completeListElement.appendChild(completeListHeader);
 
   for (const index in todoItems) {
     const todo = todoItems[index];
 
-    const listItemElement = document.createElement('li');
-    const listItemTextElement = _createListItemTextElement(todo);
-    const deadlineSectionElement = _createDeadlineSectionElement(todo);
-    const buttonSectionElement = _createButtonSectionElement(todos, todo);
+    if (!todo.completed) {
+      const todoListItemElement = _createTodoElement(todos, todo);
+      todoListItemElement.draggable = true;
 
-    listItemElement.setAttribute('id', todo.id);
-    listItemElement.setAttribute('class', 'todo-item');
-    listItemElement.appendChild(listItemTextElement);
-    listItemElement.appendChild(deadlineSectionElement);
-    listItemElement.appendChild(buttonSectionElement);
+      todoListElement.appendChild(todoListItemElement);
+    } else {
+      const completeListItemElement = _createTodoElement(todos, todo);
+      completeListItemElement.draggable = true;
 
-    todoListElement.appendChild(listItemElement);
+      completeListElement.appendChild(completeListItemElement);
+    }
   }
 };
