@@ -14,6 +14,7 @@ const todoList = new TodoList();
 
 // TODO: Select DOM elements
 const todoInputElement = document.getElementById('todo-input');
+const todoDateTimeElement = document.getElementById('todo-datetime');
 
 // TODO: Add event listener for form submission
 const form = document.getElementById('todo-form');
@@ -21,13 +22,16 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
 
   document.dispatchEvent(new CustomEvent(SUBMIT_WITH_VALUE, {
-    detail: { textValue: todoInputElement.value }
+    detail: {
+      textValue: todoInputElement.value,
+      deadline: todoDateTimeElement.value
+    }
   }));
 });
 
 // TODO: Implement addTodo function
-document.addEventListener(SUBMIT_WITH_VALUE, ({ detail }) => {
-  const todoItem = new TodoItem(detail.textValue);
+document.addEventListener(SUBMIT_WITH_VALUE, ({ detail: { textValue, deadline } }) => {
+  const todoItem = new TodoItem(textValue, deadline);
   todoList.addTodo(todoItem);
   todoInputElement.value = emptyString;
 
@@ -52,17 +56,22 @@ document.addEventListener(REMOVE_TODO, () => {
   renderTodos(todoList);
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (isStorageExist()) {
-    const { todos } = JSON.parse(localStorage.getItem(STORAGE_KEY))
-
-    for (const i in todos) {
-      const todo = todos[i];
-      const todoItem = new TodoItem(todo.text, todo.completed);
+const _renderInitialData = () => {
+  const parsedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if (parsedData !== null) {
+    for (const i in parsedData.todos) {
+      const { text, deadline, completed } = parsedData.todos[i];
+      const todoItem = new TodoItem(text, deadline, completed);
       todoList.addTodo(todoItem)
     }
-
+  
     renderTodos(todoList);
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (isStorageExist()) {
+    _renderInitialData();
   } else {
     alert('Your browser does not have local storage');
   }

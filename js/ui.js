@@ -3,12 +3,27 @@ export const COMPLETE_ITEM = 'COMPLETE_ITEM';
 const _createListItemTextElement = (todo) => {
   const listItemTextElement = document.createElement('p');
   listItemTextElement.innerText = todo.text;
+  listItemTextElement.setAttribute('class', 'todo-title-section')
 
   if (todo.completed) {
     listItemTextElement.setAttribute('class', 'completed');
   }
 
   return listItemTextElement;
+};
+
+const _createDeadlineSectionElement = (todo) => {
+  const dateTime = new Date(todo.deadline);
+  const dateStringDisplay = dateTime.toDateString();
+  const timeStringDisplay = dateTime.toLocaleTimeString();
+  const deadlineTodoElement = document.createElement('div');
+  const deadlineTodoTextElement = document.createElement('p');
+
+  deadlineTodoTextElement.innerText = dateStringDisplay + ' | ' + timeStringDisplay;
+  deadlineTodoElement.appendChild(deadlineTodoTextElement);
+  deadlineTodoElement.setAttribute('class', 'deadline-section');
+
+  return deadlineTodoElement;
 };
 
 const _createButtonSectionElement = (todos, todo) => {
@@ -42,22 +57,50 @@ const _createButtonSectionElement = (todos, todo) => {
   return buttonSectionElement;
 };
 
+const _createHeader = () => {
+  const firstRow = document.createElement('li');
+  firstRow.setAttribute('class', 'todo-item');
+
+  const firstRowTitleElement = document.createElement('p');
+  firstRowTitleElement.setAttribute('class', 'todo-title-section');
+  firstRowTitleElement.innerText = 'Title';
+
+  const firstRowDeadlineTextElement = document.createElement('p');
+  firstRowDeadlineTextElement.setAttribute('class', 'deadline-section');
+  firstRowDeadlineTextElement.innerText = 'Deadline';
+
+  const firstRowButtonSectionTextElement = document.createElement('p');
+  firstRowButtonSectionTextElement.setAttribute('class', 'button-section');
+  firstRowButtonSectionTextElement.innerText = 'ACTION';
+
+  firstRow.appendChild(firstRowTitleElement);
+  firstRow.appendChild(firstRowDeadlineTextElement);
+  firstRow.appendChild(firstRowButtonSectionTextElement);
+
+  return firstRow;
+};
+
 export function renderTodos(todos) {
   // TODO: Implement renderTodos function
   const todoItems = todos.getTodos();
   const todoListElement = document.getElementById('todo-list');
   todoListElement.innerHTML = '';
 
+  const firstRowHeader = _createHeader();
+  todoListElement.appendChild(firstRowHeader);
+
   for (const index in todoItems) {
     const todo = todoItems[index];
 
     const listItemElement = document.createElement('li');
     const listItemTextElement = _createListItemTextElement(todo);
+    const deadlineSectionElement = _createDeadlineSectionElement(todo);
     const buttonSectionElement = _createButtonSectionElement(todos, todo);
 
     listItemElement.setAttribute('id', todo.id);
     listItemElement.setAttribute('class', 'todo-item');
     listItemElement.appendChild(listItemTextElement);
+    listItemElement.appendChild(deadlineSectionElement);
     listItemElement.appendChild(buttonSectionElement);
 
     todoListElement.appendChild(listItemElement);

@@ -35,6 +35,20 @@ h1 {
   border-radius: 4px 0 0 4px;
 }
 
+#todo-deadline-text {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+}
+
+#todo-datetime {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+}
+
 button {
   padding: 10px 20px;
   background-color: #5cb85c;
@@ -74,13 +88,27 @@ button:hover {
   background-color: #c9302c;
 }
 
+.todo-title-section {
+  width: 40%;
+}
+
 .completed {
+  width: 40%;
   text-decoration: line-through;
   opacity: 0.6;
 }
 
+.deadline-section {
+  width: 40%;
+  flex-grow: 1;
+  justify-content: flex-start;
+}
+
 .button-section {
+  width: 20%;
   display: flex;
+  flex-grow: 1;
+  justify-content: center;
   gap: 5px;
 }
 
