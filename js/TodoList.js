@@ -10,6 +10,8 @@ export const isStorageExist = () => {
   return true;
 };
 
+export const saveTodoListToLocalStorage = (key, todos) => localStorage.setItem(key, JSON.stringify({ todos }));
+
 export default class TodoList {
   constructor() {
     this.todos = [];
@@ -28,7 +30,7 @@ export default class TodoList {
 
     // LOCAL STORAGE ACTION
     if (isStorageExist()) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ todos: this.todos }));
+      saveTodoListToLocalStorage(STORAGE_KEY, this.todos);
     }
 
     document.dispatchEvent(new Event(REMOVE_TODO));

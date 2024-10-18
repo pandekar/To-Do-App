@@ -1,4 +1,9 @@
-import TodoList, { REMOVE_TODO, STORAGE_KEY, isStorageExist } from './TodoList.js';
+import TodoList, {
+  REMOVE_TODO,
+  STORAGE_KEY,
+  isStorageExist,
+  saveTodoListToLocalStorage
+} from './TodoList.js';
 import TodoItem from './TodoItem.js';
 import { renderTodos, COMPLETE_ITEM } from './ui.js';
 
@@ -28,7 +33,7 @@ document.addEventListener(SUBMIT_WITH_VALUE, ({ detail }) => {
 
   // LOCAL STORAGE ACTION
   if (isStorageExist()) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ todos: todoList.getTodos() }));
+    saveTodoListToLocalStorage(STORAGE_KEY, todoList.getTodos());
   }
 
   renderTodos(todoList);
@@ -39,7 +44,7 @@ document.addEventListener(COMPLETE_ITEM, () => {
 
   // LOCAL STORAGE ACTION
   if (isStorageExist()) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ todos: todoList.getTodos() }));
+    saveTodoListToLocalStorage(STORAGE_KEY, todoList.getTodos());
   }
 });
 
