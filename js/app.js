@@ -40,6 +40,7 @@ document.addEventListener(SUBMIT_WITH_VALUE, ({ detail: { textValue, deadline } 
   const todoItem = new TodoItem(textValue, deadline);
   todoList.addTodo(todoItem);
   todoInputElement.value = emptyString;
+  todoDateTimeElement.value = emptyString;
 
   // LOCAL STORAGE ACTION
   if (isStorageExist()) {
@@ -83,39 +84,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+const onDropHandler = () => (e) => {
+  e.preventDefault();
+
+  const dragged = draggedObject;
+  dragged.toggleCompleted();
+
+  todoList.removeTodo(dragged.id);
+  todoList.addTodo(new TodoItem(dragged.text, dragged.deadline, dragged.completed))
+
+  renderTodos(todoList);
+  saveTodoListToLocalStorage(STORAGE_KEY, todoList.getTodos());
+};
+
 const completeListSectionElement = document.getElementById('complete-list-section');
 completeListSectionElement.addEventListener('dragover', (e) => {
   e.preventDefault();
 });
+completeListSectionElement.addEventListener('drop', onDropHandler());
 
-completeListSectionElement.addEventListener('drop', (e) => {
-  e.preventDefault();
-
-  const dragged = draggedObject;
-  dragged.toggleCompleted();
-
-  todoList.removeTodo(dragged.id);
-  todoList.addTodo(new TodoItem(dragged.text, dragged.deadline, dragged.completed))
-
-  renderTodos(todoList);
-  saveTodoListToLocalStorage(STORAGE_KEY, todoList.getTodos());
-});
-
-// test
-const todoListSection = document.getElementById('todo-list-section');
-todoListSection.addEventListener('dragover', (e) => {
+const todoListSectionElement = document.getElementById('todo-list-section');
+todoListSectionElement.addEventListener('dragover', (e) => {
   e.preventDefault();
 });
-
-todoListSection.addEventListener('drop', (e) => {
-  e.preventDefault();
-
-  const dragged = draggedObject;
-  dragged.toggleCompleted();
-
-  todoList.removeTodo(dragged.id);
-  todoList.addTodo(new TodoItem(dragged.text, dragged.deadline, dragged.completed))
-
-  renderTodos(todoList);
-  saveTodoListToLocalStorage(STORAGE_KEY, todoList.getTodos());
-});
+todoListSectionElement.addEventListener('drop', onDropHandler());
